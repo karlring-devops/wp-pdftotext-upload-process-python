@@ -7,8 +7,8 @@ EOF
 
 crontab -l > mycron
 #echo new cron into cron file
-(crontab -u root -l ; echo "* * * * * * . /var/www/html/wp-content/python/process_uploads.sh") | crontab -u root -
-# echo "* * * * * * . /var/www/html/wp-content/python/process_uploads.sh" >> mycron
+(crontab -u root -l ; echo "*/5  * * * * . /var/www/html/wp-content/wp-pdftotext-upload-process-python/process_uploads.sh") | crontab -u root -
+# echo "*/5  * * * * . /var/www/html/wp-content/python/process_uploads.sh" >> mycron
 #install new cron file
 crontab mycron
 rm mycron
