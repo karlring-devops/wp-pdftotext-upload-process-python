@@ -78,6 +78,9 @@ def wpenv(instance_name, port):
     file_write(PWD+f'/'+'.wpenv', DATA,'w')
     return DATA
 
+dbenv('tdlo',3306)
+wpenv('tdlo', 8081)
+
 ########################################################################
 
 class Environment:
@@ -286,6 +289,9 @@ class Uploads(Environment):
                            ), '__CHEVR__', '^'
                  ),1,50) as file_text
                , CONCAT('http://192.168.1.133/wp-admin/wp-content/uploads/2023/11/',REPLACE(file_name,'.pdf','.txt'),'||FULL TEXT') as link
+               ,  upload_date
+               ,  source_url
+               ,  uploaded_by
                -- https://wpdatatables.com||Check out wpDataTables
              FROM wp_auto_upload_file
              ;
@@ -509,8 +515,8 @@ class Process(Environment):
   
 def main():
 
-    dbenv('tdlo',3306)
-    wpenv('tdlo', 8081)
+    # dbenv('tdlo',3306)
+    # wpenv('tdlo', 8081)
     Process().configure()
     Process().uploads()
 
