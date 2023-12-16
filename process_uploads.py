@@ -78,9 +78,6 @@ def wpenv(instance_name, port):
     file_write(PWD+f'/'+'.wpenv', DATA,'w')
     return DATA
 
-dbenv('tdlo',3306)
-wpenv('tdlo', 8081)
-
 ########################################################################
 
 class Environment:
@@ -281,6 +278,7 @@ class Uploads(Environment):
                 -- , file_sha512sum
                 -- , file_info     
                 , wp_wfu_idlog
+                , upload_date
                 , SUBSTR(REPLACE(
                            REPLACE(
                                    REPLACE(
@@ -289,9 +287,6 @@ class Uploads(Environment):
                            ), '__CHEVR__', '^'
                  ),1,50) as file_text
                , CONCAT('http://192.168.1.133/wp-admin/wp-content/uploads/2023/11/',REPLACE(file_name,'.pdf','.txt'),'||FULL TEXT') as link
-               ,  upload_date
-               ,  source_url
-               ,  uploaded_by
                -- https://wpdatatables.com||Check out wpDataTables
              FROM wp_auto_upload_file
              ;
@@ -323,7 +318,6 @@ class Uploads(Environment):
 
                     self.shell_command(CMD)
                     print(CMD)
-
 
 class Convert(Environment):
 
@@ -515,10 +509,14 @@ class Process(Environment):
   
 def main():
 
-    # dbenv('tdlo',3306)
-    # wpenv('tdlo', 8081)
+    dbenv('tdlo',3306)
+    wpenv('tdlo', 8081)
     Process().configure()
     Process().uploads()
 
 
 main()    
+
+
+
+# sudo docker exec -it 482bcaca3bac sh -c "cd /var/www/html/wp-content ;  git clone https://github.com/karlring-devops/wp-pdftotext-upload-process-python.git cd wp-pdftotext-upload-process-python python3 process_uploads.py"
